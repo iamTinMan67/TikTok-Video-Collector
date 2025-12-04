@@ -1,0 +1,29 @@
+Export TikTok cookies (one-time) - instructions (options):
+
+Option A - Browser extension (recommended quick)
+1. Install a cookie export extension for Chrome/Edge/Firefox (e.g., 'EditThisCookie' or 'Get cookies.txt' or 'Cookie Quick Manager').
+2. Open tiktok.com, log in to your account.
+3. Use the extension to export cookies in JSON format. Save file as `tiktok_cookies.json` in the project folder.
+4. If the extension exports a cookies.txt format, you can convert or use Playwright once to generate JSON.
+
+Option B - Playwright (one-time, script included)
+1. Run Playwright and log in manually, then use a small script to export cookies to JSON.
+2. Example (run in Python after `python -m playwright install`):
+   ```python
+   from playwright.sync_api import sync_playwright
+   import json
+
+   with sync_playwright() as p:
+       browser = p.chromium.launch(headless=False)
+       ctx = browser.new_context()
+       page = ctx.new_page()
+       page.goto('https://www.tiktok.com/login')
+       input('Log in in the opened browser window, then press Enter here...')
+       cookies = ctx.cookies()
+       with open('tiktok_cookies.json','w',encoding='utf-8') as f:
+           json.dump(cookies,f,indent=2)
+       browser.close()
+   ```
+3. Move the generated `tiktok_cookies.json` into the project root.
+
+Security note: keep `tiktok_cookies.json` private; it grants access to your logged-in session.
